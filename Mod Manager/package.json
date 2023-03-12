@@ -25,7 +25,7 @@
 		"Chrome 89"
 	],
 	"dependencies": {
-		"@electron/remote": "^2.0.8",
+		"@electron/remote": "^2.0.9",
 		"@fortawesome/free-regular-svg-icons": "^6.3.0",
 		"@fortawesome/free-solid-svg-icons": "^6.3.0",
 		"adm-zip": "^0.5.9",
