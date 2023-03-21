@@ -13,7 +13,7 @@
     "decimal.js": "^10.4.3",
     "eventemitter-asyncresource": "^1.0.0",
     "filtrex": "^3.0.0",
-    "fs-extra": "^11.1.0",
+    "fs-extra": "^11.1.1",
     "hash-wasm": "^4.9.0",
     "hdr-histogram-js": "^3.0.0",
     "hdr-histogram-percentiles-obj": "^3.0.0",
