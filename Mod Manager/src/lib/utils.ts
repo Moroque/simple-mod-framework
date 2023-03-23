@@ -10,7 +10,7 @@ import merge from "lodash.mergewith"
 import semver from "semver"
 import { cloneDeep } from "lodash"
 
-export const FrameworkVersion = "2.18.0"
+export const FrameworkVersion = "2.19.0"
 
 const validateManifest = new Ajv().compile(manifestSchema)
 
@@ -327,6 +327,14 @@ export const getModFolder = memoize(function (id: string) {
 		: window.path.join("..", "Mods", id) // Mod is an RPKG mod, use folder name
 
 	if (!folder) {
+		window.alert(`The mod ${id} couldn't be located! This will likely cause issues in parts of the framework. If you deleted a mod folder, use the Delete Mod option next time.`)
+
+		if (getConfig().loadOrder.includes(id)) {
+			mergeConfig({
+				loadOrder: getConfig().loadOrder.filter(a=>a!=id)
+			})
+		}
+
 		throw new Error(`Couldn't find mod ${id}`)
 	}
 
@@ -422,16 +430,14 @@ const modWarnings: {
 
 let startedGettingModWarnings = false
 
-export async function getAllModWarnings() {
+export async function getAllModWarnings(): Promise<Record<string, { title: string; subtitle: string; trace: string; type: string }[]>> {
 	if (!(startedGettingModWarnings || window.fs.existsSync("./warnings.json"))) {
 		startedGettingModWarnings = true
 
 		const allWarnings = []
 
 		for (const mod of getAllMods().filter((a) => modIsFramework(a))) {
-			const fileWarnings: Record<string, any[]> = {}
-
-			const filesToCheck: string[][] = []
+			const fileWarnings: Record<string, { title: string; subtitle: string; trace: string; type: string }[]> = {}
 
 			for (const file of window.klaw(getModFolder(mod), { nodir: true }).map((a) => a.path)) {
 				fileWarnings[file] = []
@@ -447,7 +453,7 @@ export async function getAllModWarnings() {
 				}
 			}
 
-			allWarnings.push([mod, Object.values(fileWarnings)])
+			allWarnings.push([mod, Object.values(fileWarnings).flat()])
 		}
 
 		await window.fs.writeJSON("./warnings.json", Object.fromEntries(await Promise.all(allWarnings)))
