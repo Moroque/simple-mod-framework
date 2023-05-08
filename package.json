@@ -21,7 +21,7 @@
     "klaw-sync": "^6.0.0",
     "lodash.isequal": "^4.5.0",
     "lodash.mergewith": "^4.6.2",
-    "lossless-json": "^2.0.8",
+    "lossless-json": "^2.0.9",
     "luxon": "^3.3.0",
     "md5": "^2.3.0",
     "md5-file": "^5.0.0",
